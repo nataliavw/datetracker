@@ -26,7 +26,20 @@ namespace DateTracker
                 {
 
                     case 'a':
-                        Console.WriteLine("Command Empty.");
+
+                        nextFree = 0;
+                        Console.WriteLine("Give a date to add:");
+
+                        do
+                        {
+                            nextFree++;
+
+                        } while (list.ContainsKey(nextFree));
+
+                        list.Add(nextFree, Console.ReadLine());
+
+
+                        Console.WriteLine("Date added.");
                         break;
 
                     case 'r':
