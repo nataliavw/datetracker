@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DateTracker.Tests
 {
-    public class ListClassTests
+    public class DateRepositoryTests
     {
         [SetUp]
         public void Setup()
@@ -16,7 +16,7 @@ namespace DateTracker.Tests
         public void NewClassContainsEmptyList()
         {
             //Arrange
-            var SUT = new ListClass();
+            var SUT = new DateRepository();
             //Act
             List<DateEntry> result = SUT.GetList();
             //Assert
@@ -27,11 +27,8 @@ namespace DateTracker.Tests
         public void AmendedClassContainsEntry()
         {
             //Arrange
-            var SUT = new ListClass();
-            DateEntry dateEntry = new DateEntry
-            {
-                date = DateTime.Parse("2001/01/01")
-            };
+            var SUT = new DateRepository();
+            DateEntry dateEntry = new DateEntry(DateTime.Parse("2001/01/01"));
             //Act
             SUT.Add(dateEntry);
             var result = SUT.GetList();
@@ -45,16 +42,35 @@ namespace DateTracker.Tests
         public void FutureDatesThrowAnException()
         {
             //Arrange
-            var SUT = new ListClass();
-            var dateEntry = new DateEntry
-            {
-                date = DateTime.Now.AddDays(1)
-            };
+            var SUT = new DateRepository();
+            var dateEntry = new DateEntry(DateTime.Now.AddDays(1));
             //Act
             //Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => SUT.Add(dateEntry));
             var result = SUT.GetList();
             Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void RandomisedClassContainsEntries()
+        {
+            //Arrange
+            var SUT = new DateRepository();
+            //Act
+            SUT.Randomise();
+            var result = SUT.GetList();
+            //Assert
+            Assert.AreEqual(50, result.Count);
+        }
+
+        [Test]
+        public void GetDiffIsAccurate()
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
         }
     }
 }
