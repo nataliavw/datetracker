@@ -1,5 +1,4 @@
-﻿using DateTracker.DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -11,37 +10,50 @@ namespace DateTracker
         static void Main(string[] args)
         {
             ConsoleKeyInfo command;
+<<<<<<< Updated upstream
+            var list = new Dictionary<int, string>();
+            int nextFree;
+            string line;
+=======
             DateTime parsedDate;
             var dates = new DateRepository();
             var currentList = dates.GetList();
+>>>>>>> Stashed changes
 
             Console.WriteLine("Welcome to the Date & Anniversary Tracking program.\n");
             do
             {
                 Console.WriteLine(
+<<<<<<< Updated upstream
+                    "\nMenu: \n\tPress A to add a date. \n\tPress R to remove a date. \n\tPress T to list all dates." +
+                    " \n\tPress L to load the saved list. \n\tPress S to save the current list. \n\tPress Q to exit the program.");
+=======
                     "\n\nMenu: \n\tPress A to add a date. \n\tPress O to sort all dates. \n\tPress T to list all dates." +
                     "\n\tPress R to randomise 50 entries. \n\tPress E to compare a date. \n\tPress V to get the average date. \n\tPress L to load the saved list." +
                     "\n\tPress S to save the current list. \n\tPress Q to exit the program.\n");
+>>>>>>> Stashed changes
                 command = Console.ReadKey(true);
 
                 switch (char.ToLower(command.KeyChar))
                 {
 
                     case 'a':
+
+                        nextFree = 0;
                         Console.WriteLine("Give a date to add:");
-                        if (DateTime.TryParse(Console.ReadLine(), out parsedDate) == true)
-                        {
-                            var entry = new DateEntry(parsedDate);
-                            dates.Add(entry);
 
-                            Console.WriteLine("Date added.");
-                        }
-                        else
+                        do
                         {
-                            Console.WriteLine("Invalid Input. Try again from menu.");
-                        }
-                        break;
+                            nextFree++;
 
+<<<<<<< Updated upstream
+                        } while (list.ContainsKey(nextFree));
+
+                        list.Add(nextFree, Console.ReadLine());
+
+
+                        Console.WriteLine("Date added.");
+=======
                     case 'o':
                         var sortedDates = dates.GetSortedDates();
                         Console.WriteLine("Dates successfully reorganised.");
@@ -66,13 +78,19 @@ namespace DateTracker
                         {
                             Console.WriteLine($"{i}: {currentList[i].date}");
                         }
+>>>>>>> Stashed changes
                         break;
 
                     case 'r':
-                        dates.Randomise();
-                        Console.WriteLine("List randomised successfully.");
+                        Console.WriteLine("Command Empty.");
                         break;
 
+<<<<<<< Updated upstream
+                    case 't':
+                        Console.WriteLine("Command Empty.");
+                        break;
+
+=======
                     case 'e':
                         Console.WriteLine("Enter a date to check the time elapsed.");
                         if (DateTime.TryParse(Console.ReadLine(), out parsedDate) == true)
@@ -89,25 +107,29 @@ namespace DateTracker
                         Console.WriteLine(dates.GetMedianDateEntry().date);
                         break;
 
+>>>>>>> Stashed changes
                     case 'l':
-                        dates.Clear();
+                        nextFree = 1;
+
+                        list.Clear();
 
                         using (var fileIn = new StreamReader("DateList.txt"))
                         {
-                                dates.Add(new DateEntry(DateTime.Now));
+                            while ((line = fileIn.ReadLine()) != null)
+                            {
+                                list.Add(nextFree, line);
+                                nextFree++;
+                            }
                         }
                         Console.WriteLine("List loaded.");
                         break;
 
                     case 's':
-                        if (dates.SaveList("DateList.txt"))
-                        {
-                            Console.WriteLine("File saved.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("File save failed.");
-                        }
+                        using (StreamWriter fileOut = new StreamWriter("DateList.txt"))
+                            foreach (var entry in list)
+                                fileOut.WriteLine(entry.Value);
+                        Console.WriteLine("File saved.");
+
                         break;
 
                     case 'q':
